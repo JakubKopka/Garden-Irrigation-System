@@ -2,13 +2,16 @@ package kopka.jakub.gardensystem.Controller;
 
 import com.pi4j.io.gpio.*;
 import kopka.jakub.gardensystem.GPIO.Action;
+import kopka.jakub.gardensystem.Model.Irrigation;
+import kopka.jakub.gardensystem.Repository.IrrigationRepo;
+import kopka.jakub.gardensystem.Service.DynamicSchedulerVersion2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 @RestController
@@ -17,15 +20,23 @@ public class MainController {
     @Autowired
     Action action;
 
-    @RequestMapping("/open")
-    public String open() throws InterruptedException {
-        System.out.println(action.openSequence(1).toString());
-        return action.openSequence(1);
+    @Autowired
+    DynamicSchedulerVersion2 dynamicSchedulerVersion2;
+
+
+    @Autowired
+    IrrigationRepo irrigationRepo;
+
+    @RequestMapping("/open/{pin}")
+    public String open(@PathVariable int pin) throws InterruptedException {
+        System.out.println(action.openSequence(pin).toString());
+        String status = action.openSequence(pin);
+        return status;
     }
 
-    @RequestMapping("/close")
-    public String close(){
-        action.closeSequence(1);
+    @RequestMapping("/close/{pin}")
+    public String close(@PathVariable int pin){
+        action.closeSequence(pin);
         return action.closeSequence(1);
     }
 
@@ -36,4 +47,41 @@ public class MainController {
         action.closeSequence(pin);
         return "start " + pin + seconds;
     }
+
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public String getGPIOInfo() {
+        String valueOfPins = "";
+//        for (GpioPinDigitalMultipurpose pin: action.getPins()) {
+//            valueOfPins += pin.getName() + " :  " + pin.getState().toString() + "\n";
+//        }
+        return valueOfPins;
+    }
+
+
+    @RequestMapping(value = "/demo", method = RequestMethod.GET)
+    public void demo() throws InterruptedException {
+        System.out.println("=============START DEMO==================");
+//        for (GpioPinDigitalMultipurpose pin: action.getPins()) {
+//            pin.high();
+//            System.out.println("----------------");
+//            System.out.println(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + " " + pin.getState().toString());
+//            TimeUnit.MINUTES.sleep(1);
+//            pin.low();
+//            System.out.println(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date())  + " " + pin.getState().toString());
+//            TimeUnit.SECONDS.sleep(10);
+//        }
+        System.out.println("=============END DEMO==================");
+    }
+
+    @RequestMapping(value = "/change/{time}", method = RequestMethod.GET)
+    public void change(@PathVariable String time) {
+        System.out.println("====================="+ time);
+        Irrigation irrigation = irrigationRepo.findAll().get(0);
+        String[] strings = time.split(":");
+        irrigation.setCron("0 "+ strings[1]+" "+strings[0]+" * * ?");
+        irrigationRepo.save(irrigation);
+        dynamicSchedulerVersion2.cancel();
+        dynamicSchedulerVersion2.activate();
+    }
+
 }
