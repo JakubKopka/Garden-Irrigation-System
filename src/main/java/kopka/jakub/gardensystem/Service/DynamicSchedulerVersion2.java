@@ -1,6 +1,8 @@
 package kopka.jakub.gardensystem.Service;
 
 //import kopka.jakub.gardensystem.Repository.ConfigRepo;
+import com.pi4j.io.gpio.GpioPinDigitalMultipurpose;
+import kopka.jakub.gardensystem.GPIO.Action;
 import kopka.jakub.gardensystem.Model.Irrigation;
 import kopka.jakub.gardensystem.Model.Section;
 import kopka.jakub.gardensystem.Repository.IrrigationRepo;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 /**
  * Alternative version for DynamicScheduler
@@ -28,6 +32,9 @@ public class DynamicSchedulerVersion2 implements SchedulingConfigurer {
 
     @Autowired
     IrrigationRepo irrigationRepo;
+
+    @Autowired
+    Action action;
 
     private static Logger LOGGER = LoggerFactory.getLogger(DynamicScheduler.class);
 
@@ -62,6 +69,52 @@ public class DynamicSchedulerVersion2 implements SchedulingConfigurer {
         List<Section> sections = irrigation.getSections();
         System.out.println(irrigation);
         LOGGER.info("WYKONANO ZAPLANOWANY TASK  \t cron->{}", irrigation.getCron());
+
+        int timeInMinutes = 5;
+        int kropelkowe = 5;
+
+        for(int i = 1; i<=6; i++){
+            if(!irrigationRepo.findAll().get(0).isActive()) {
+                break;
+            }
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++ Wykonano pętle nr " + i);
+            try {
+//                            action.openSequence(n);
+                if(i == 6){
+                    TimeUnit.SECONDS.sleep(kropelkowe);
+                } else {
+                    TimeUnit.SECONDS.sleep(timeInMinutes);
+                }
+//                            action.closeSequence(n);
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+//        IntStream.iterate(1, n->n+1)
+//                .limit(6)
+//                .forEach(n->{
+//                    if(irrigationRepo.findAll().get(0).isActive()) {
+//
+//                    }
+//                        System.out.println("Wykonano pętle nr " + n);
+//                        try {
+////                            action.openSequence(n);
+//                            if(n == 6){
+//                                TimeUnit.SECONDS.sleep(kropelkowe);
+//                            } else {
+//                                TimeUnit.SECONDS.sleep(timeInMinutes);
+//                            }
+////                            action.closeSequence(n);
+//                            TimeUnit.SECONDS.sleep(5);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                });
+
     }
 
 

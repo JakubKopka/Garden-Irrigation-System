@@ -37,10 +37,29 @@ public class DynamicScheduler implements SchedulingConfigurer {
 
     @PostConstruct
     public void initDatabase() {
+
+
         Irrigation irrigation = new Irrigation("0/5 * * * * ?");
-        Section section = new Section(0, "Desription", 15);
-        sectionRepo.save(section);
-        irrigation.addNewSection(section);
+        Section section1 = new Section(1, "Statyczne przód L1", 15);
+//        Section section2 = new Section(2, "Statyczne przód L2", 15);
+//
+//        Section section3 = new Section(3, "Statyczne przód P1", 15);
+//        Section section4 = new Section(4, "Statyczne przód P2", 15);
+//        Section section5 = new Section(5, "Turbinowe przód", 15);
+//
+//        Section section6 = new Section(6, "Kropelkowe przód", 20);
+        sectionRepo.save(section1);
+        irrigation.addNewSection(section1);
+//        sectionRepo.save(section2);
+//        irrigation.addNewSection(section2);
+//        sectionRepo.save(section3);
+//        irrigation.addNewSection(section3);
+//        sectionRepo.save(section4);
+//        irrigation.addNewSection(section4);
+//        sectionRepo.save(section5);
+//        irrigation.addNewSection(section5);
+//        sectionRepo.save(section6);
+//        irrigation.addNewSection(section6);
         irrigationRepo.save(irrigation);
     }
 

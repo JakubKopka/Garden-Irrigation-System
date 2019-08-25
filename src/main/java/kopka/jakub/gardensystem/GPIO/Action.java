@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 @Scope("singleton")
 public class Action {
-
+//
 //    private GpioController gpio = GpioFactory.getInstance();
 //    private List<GpioPinDigitalMultipurpose > pins;
 
@@ -37,7 +37,7 @@ public class Action {
 //        pins.add(gpio.provisionDigitalMultipurposePin(RaspiPin.GPIO_14, PinMode.DIGITAL_OUTPUT));
 //        pins.add(gpio.provisionDigitalMultipurposePin(RaspiPin.GPIO_15, PinMode.DIGITAL_OUTPUT));
 //        pins.add(gpio.provisionDigitalMultipurposePin(RaspiPin.GPIO_16, PinMode.DIGITAL_OUTPUT));
-
+//
 //        for (GpioPinDigitalOutput pin : pins) {
 //            pin.setMode(PinMode.DIGITAL_OUTPUT);
 //        }
@@ -51,8 +51,8 @@ public class Action {
     }
 
     public String  closeSequence(int gpionumber){
-
-        System.out.println(gpionumber);
+//
+//        System.out.println(gpionumber);
 //        pins.get(gpionumber-1).low();
 //        System.out.println(gpionumber);
 //        return pins.get(gpionumber-1).getName() + " " +pins.get(gpionumber-1).getState().toString();

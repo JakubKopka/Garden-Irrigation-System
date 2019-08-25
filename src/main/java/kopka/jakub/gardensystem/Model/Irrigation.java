@@ -21,6 +21,9 @@ public class Irrigation {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<Section> sections = new ArrayList<>();
 
+    @Column(name="active")
+    private boolean active = true;
+
     public Irrigation() {
     }
 
@@ -60,6 +63,13 @@ public class Irrigation {
         this.sections = sections;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     @Override
     public String toString() {

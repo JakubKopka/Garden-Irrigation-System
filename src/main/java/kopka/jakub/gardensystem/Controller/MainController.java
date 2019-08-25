@@ -58,7 +58,7 @@ public class MainController {
     }
 
 
-    @RequestMapping(value = "/demo", method = RequestMethod.GET)
+    @RequestMapping(value = "/demo/{time}", method = RequestMethod.GET)
     public void demo() throws InterruptedException {
         System.out.println("=============START DEMO==================");
 //        for (GpioPinDigitalMultipurpose pin: action.getPins()) {
@@ -82,6 +82,14 @@ public class MainController {
         irrigationRepo.save(irrigation);
         dynamicSchedulerVersion2.cancel();
         dynamicSchedulerVersion2.activate();
+    }
+
+
+    @RequestMapping("/stop")
+    public void stop() {
+        Irrigation irrigation = irrigationRepo.findAll().get(0);
+        irrigation.setActive(false);
+        irrigationRepo.save(irrigation);
     }
 
 }
