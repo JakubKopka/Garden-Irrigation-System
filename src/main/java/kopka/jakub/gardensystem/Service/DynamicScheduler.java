@@ -39,28 +39,35 @@ public class DynamicScheduler implements SchedulingConfigurer {
     public void initDatabase() {
 
 
-        Irrigation irrigation = new Irrigation("0/5 * * * * ?");
-        Section section1 = new Section(1, "Statyczne przód L1", 15);
-//        Section section2 = new Section(2, "Statyczne przód L2", 15);
+//        Irrigation irrigation = new Irrigation("0 0 20 * * ?");
 //
-//        Section section3 = new Section(3, "Statyczne przód P1", 15);
-//        Section section4 = new Section(4, "Statyczne przód P2", 15);
-//        Section section5 = new Section(5, "Turbinowe przód", 15);
+//        Section section1 = new Section(1, "Statyczne przód lewo góra", 20);
+//        sectionRepo.save(section1);
+//        irrigation.addNewSection(section1);
 //
-//        Section section6 = new Section(6, "Kropelkowe przód", 20);
-        sectionRepo.save(section1);
-        irrigation.addNewSection(section1);
+//        Section section2 = new Section(2, "Statyczne przód lewo dół", 20);
 //        sectionRepo.save(section2);
 //        irrigation.addNewSection(section2);
+//
+//        Section section3 = new Section(3, "Statyczne przód prawo góra", 20);
 //        sectionRepo.save(section3);
 //        irrigation.addNewSection(section3);
+//
+//        Section section4 = new Section(4, "Statyczne przód prawo dół", 20);
 //        sectionRepo.save(section4);
 //        irrigation.addNewSection(section4);
+//
+//        Section section5 = new Section(5, "Turbonowe przód", 25);
 //        sectionRepo.save(section5);
 //        irrigation.addNewSection(section5);
+//
+//        Section section6 = new Section(6, "Kropelkowe przód", 25);
 //        sectionRepo.save(section6);
 //        irrigation.addNewSection(section6);
-        irrigationRepo.save(irrigation);
+//
+//
+//        irrigationRepo.save(irrigation);
+
     }
 
     @Bean

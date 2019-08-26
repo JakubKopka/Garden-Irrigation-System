@@ -1,6 +1,7 @@
 package kopka.jakub.gardensystem.Service;
 
 //import kopka.jakub.gardensystem.Repository.ConfigRepo;
+
 import com.pi4j.io.gpio.GpioPinDigitalMultipurpose;
 import kopka.jakub.gardensystem.GPIO.Action;
 import kopka.jakub.gardensystem.Model.Irrigation;
@@ -70,22 +71,23 @@ public class DynamicSchedulerVersion2 implements SchedulingConfigurer {
         System.out.println(irrigation);
         LOGGER.info("WYKONANO ZAPLANOWANY TASK  \t cron->{}", irrigation.getCron());
 
-        int timeInMinutes = 5;
-        int kropelkowe = 5;
+        List<Section> sectionList = irrigationRepo.findAll().get(0).getSections();
 
-        for(int i = 1; i<=6; i++){
-            if(!irrigationRepo.findAll().get(0).isActive()) {
+        for (int i = 0; i <= sectionList.size(); i++) {
+            if (!irrigationRepo.findAll().get(0).isActive()) {
+                Irrigation irrigation1 = irrigationRepo.findAll().get(0);
+                irrigation1.setActive(true);
+                irrigationRepo.save(irrigation1);
                 break;
             }
-            System.out.println("++++++++++++++++++++++++++++++++++++++++++++ Wykonano pętle nr " + i);
+            System.out.println("+++++++++ Skecja nr " + i + 1 + " jest otwarta");
             try {
-//                            action.openSequence(n);
-                if(i == 6){
-                    TimeUnit.SECONDS.sleep(kropelkowe);
-                } else {
-                    TimeUnit.SECONDS.sleep(timeInMinutes);
-                }
-//                            action.closeSequence(n);
+                action.openSequence(sectionList.get(i).getSection_number());
+
+                TimeUnit.MINUTES.sleep(sectionList.get(i).getDuration());
+
+                action.closeSequence(sectionList.get(i).getSection_number());
+                System.out.println("+++++++++ Skecja nr " + i + 1 + " jest zamknięta");
                 TimeUnit.SECONDS.sleep(5);
             } catch (InterruptedException e) {
                 e.printStackTrace();
