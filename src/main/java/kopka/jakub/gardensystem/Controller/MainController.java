@@ -54,9 +54,9 @@ public class MainController {
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public  List<GPIOStatus> getGPIOInfo() {
         List<GPIOStatus> gpioStatusList = new ArrayList<>();
-        for (GpioPinDigitalMultipurpose pin: action.getPins()) {
-            gpioStatusList.add(new GPIOStatus(pin.getName(), pin.getState().toString()));
-        }
+//        for (GpioPinDigitalMultipurpose pin: action.getPins()) {
+//            gpioStatusList.add(new GPIOStatus(pin.getName(), pin.getState().toString()));
+//        }
         return gpioStatusList;
     }
 
@@ -64,15 +64,15 @@ public class MainController {
     @RequestMapping(value = "/demo/{time}", method = RequestMethod.GET)
     public void demo() throws InterruptedException {
         System.out.println("=============START DEMO==================");
-        for (GpioPinDigitalMultipurpose pin: action.getPins()) {
-            pin.high();
-            System.out.println("----------------");
-            System.out.println(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + " " + pin.getState().toString());
-            TimeUnit.MINUTES.sleep(1);
-            pin.low();
-            System.out.println(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date())  + " " + pin.getState().toString());
-            TimeUnit.SECONDS.sleep(10);
-        }
+//        for (GpioPinDigitalMultipurpose pin: action.getPins()) {
+//            pin.high();
+//            System.out.println("----------------");
+//            System.out.println(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + " " + pin.getState().toString());
+//            TimeUnit.MINUTES.sleep(1);
+//            pin.low();
+//            System.out.println(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date())  + " " + pin.getState().toString());
+//            TimeUnit.SECONDS.sleep(10);
+//        }
         System.out.println("=============END DEMO==================");
     }
 
@@ -82,7 +82,7 @@ public class MainController {
         Irrigation irrigation = irrigationRepo.findAll().get(0);
         irrigation.setActive(true);
         String[] strings = time.split(":");
-        irrigation.setCron("0 "+ strings[1]+" "+strings[0]+" * * ?");
+//        irrigation.setCron("0 "+ strings[1]+" "+strings[0]+" * * ?");
         irrigationRepo.save(irrigation);
         dynamicSchedulerVersion2.cancel();
         dynamicSchedulerVersion2.activate();
@@ -95,9 +95,9 @@ public class MainController {
         irrigation.setActive(false);
         irrigationRepo.save(irrigation);
 
-        for (GpioPinDigitalMultipurpose pin: action.getPins()) {
-            pin.low();
-        }
+//        for (GpioPinDigitalMultipurpose pin: action.getPins()) {
+//            pin.low();
+//        }
         dynamicSchedulerVersion2.cancel();
         // sprawdzic czy wszystkie piny są off
     }

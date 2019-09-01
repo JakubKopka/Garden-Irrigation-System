@@ -1,24 +1,49 @@
 package kopka.jakub.gardensystem.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+//    @Fetch(value = FetchMode.SUBSELECT)
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 
 
 @Entity
+@Transactional
 public class Irrigation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue
+    @Column(name = "id", unique = true)
     private Long id;
 
-    @Column(name = "cron")
-    private String cron;
+    @OneToMany(
+            targetEntity = Cron.class,
+            mappedBy = "irrigation",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    @JsonIgnore
+    private List<Cron> crons = new ArrayList<>();
 
-    @Column(name = "sections")
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToMany(
+            targetEntity = Section.class,
+            mappedBy = "irrigation",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    @JsonIgnore
     private List<Section> sections = new ArrayList<>();
 
     @Column(name="active")
@@ -27,18 +52,7 @@ public class Irrigation {
     public Irrigation() {
     }
 
-    public Irrigation(String cron, List<Section> sections) {
-        this.cron = cron;
-        this.sections = sections;
-    }
 
-    public Irrigation(String cron) {
-        this.cron = cron;
-    }
-
-    public void addNewSection(Section section){
-        this.sections.add(section);
-    }
     public Long getId() {
         return id;
     }
@@ -47,12 +61,12 @@ public class Irrigation {
         this.id = id;
     }
 
-    public String getCron() {
-        return cron;
+    public List<Cron> getCrons() {
+        return crons;
     }
 
-    public void setCron(String cron) {
-        this.cron = cron;
+    public void setCrons(List<Cron> crons) {
+        this.crons = crons;
     }
 
     public List<Section> getSections() {
@@ -71,12 +85,16 @@ public class Irrigation {
         this.active = active;
     }
 
-    @Override
-    public String toString() {
-        return "Irrigation{" +
-                "id=" + id +
-                ", cron='" + cron + '\'' +
-                ", sections=" + sections +
-                '}';
+
+    public void addNewSection(Section section) {
+        this.sections.add(section);
+    }
+
+    public void addNewCron(Cron cron) {
+        this.crons.add(cron);
+    }
+
+    public void addCron(Cron cron) {
+        this.crons.add(cron);
     }
 }

@@ -3,19 +3,26 @@ package kopka.jakub.gardensystem.Model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
+@Transactional
 public class Section {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue
+    @Column(name = "id", unique = true)
     private Long id;
 
     @Column(name = "section_number")
-    private int section_number;
+    private int sectionNumber;
 
     @Column(name = "description")
     private String description;
@@ -23,13 +30,19 @@ public class Section {
     @Column(name = "duration")
     private int duration;
 
+    @ManyToOne
+    @JoinColumn(name = "irrigation", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    Irrigation irrigation;
+
     public Section() {
     }
 
-    public Section(@NotNull int section_number, String description, @NotNull int duration) {
-        this.section_number = section_number;
+    public Section(@NotNull int sectionNumber, String description, @NotNull int duration, @NotNull Irrigation irrigation) {
+        this.sectionNumber = sectionNumber;
         this.description = description;
         this.duration = duration;
+        this.irrigation = irrigation;
     }
 
     public Long getId() {
@@ -40,12 +53,12 @@ public class Section {
         this.id = id;
     }
 
-    public int getSection_number() {
-        return section_number;
+    public int getSectionNumber() {
+        return sectionNumber;
     }
 
-    public void setSection_number(int section_number) {
-        this.section_number = section_number;
+    public void setSectionNumber(int section_number) {
+        this.sectionNumber = section_number;
     }
 
     public String getDescription() {
@@ -64,14 +77,34 @@ public class Section {
         this.duration = duration;
     }
 
+    public Irrigation getIrrigation() {
+        return irrigation;
+    }
+
+    public void setIrrigation(Irrigation irrigation) {
+        this.irrigation = irrigation;
+    }
 
     @Override
     public String toString() {
         return "Section{" +
                 "id=" + id +
-                ", section_number=" + section_number +
+                ", section_number=" + sectionNumber +
                 ", description='" + description + '\'' +
                 ", duration=" + duration +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Section section = (Section) o;
+        return sectionNumber == section.sectionNumber;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sectionNumber);
     }
 }
