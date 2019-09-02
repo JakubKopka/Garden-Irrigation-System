@@ -65,7 +65,7 @@ public class DynamicSchedulerVersion2 implements SchedulingConfigurer {
         if (taskRegistrar.getScheduler() == null) {
             taskRegistrar.setScheduler(poolScheduler2());
         }
-        List<Cron> cronList = irrigationRepo.findAll().get(0).getCrons();
+        List<Cron> cronList = new ArrayList<>(irrigationRepo.findAll().get(0).getCrons());
         Cron closestCrone = getClosestTimeInCrone(cronList);
         CronTrigger croneTrigger = new CronTrigger(closestCrone.getCron(), TimeZone.getDefault());
         System.out.println("WEszlooooo 1");
@@ -129,6 +129,7 @@ public class DynamicSchedulerVersion2 implements SchedulingConfigurer {
         return cron;
     }
 
+    @Transactional
     public void scheduleCron(Irrigation irrigation) {
         List<Section> sections = irrigation.getSections();
         System.out.println(irrigation);
@@ -149,19 +150,22 @@ public class DynamicSchedulerVersion2 implements SchedulingConfigurer {
                 break;
             }
             System.out.println("+++++++++ Skecja nr " + i + 1 + " jest otwarta");
-            try {
-                action.openSequence(sectionList.get(i).getSectionNumber());
-
-                TimeUnit.MINUTES.sleep(sectionList.get(i).getDuration());
-
-                action.closeSequence(sectionList.get(i).getSectionNumber());
-                System.out.println("+++++++++ Skecja nr " + i + 1 + " jest zamknięta");
-                TimeUnit.SECONDS.sleep(5);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                action.openSequence(sectionList.get(i).getSectionNumber());
+//
+//                TimeUnit.MINUTES.sleep(sectionList.get(i).getDuration());
+//
+//                action.closeSequence(sectionList.get(i).getSectionNumber());
+//                System.out.println("+++++++++ Skecja nr " + i + 1 + " jest zamknięta");
+//                TimeUnit.SECONDS.sleep(5);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 
         }
+
+        cancel();
+        activate();
 
 //        IntStream.iterate(1, n->n+1)
 //                .limit(6)

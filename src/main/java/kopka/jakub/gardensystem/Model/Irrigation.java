@@ -32,16 +32,16 @@ public class Irrigation {
             targetEntity = Cron.class,
             mappedBy = "irrigation",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @JsonIgnore
-    private List<Cron> crons = new ArrayList<>();
+    private Set<Cron> crons = new HashSet<>();
 
     @OneToMany(
             targetEntity = Section.class,
             mappedBy = "irrigation",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @JsonIgnore
     private List<Section> sections = new ArrayList<>();
@@ -61,11 +61,11 @@ public class Irrigation {
         this.id = id;
     }
 
-    public List<Cron> getCrons() {
+    public Set<Cron> getCrons() {
         return crons;
     }
 
-    public void setCrons(List<Cron> crons) {
+    public void setCrons(Set<Cron> crons) {
         this.crons = crons;
     }
 
