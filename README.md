@@ -36,3 +36,6 @@ Do stworzenia projektu wykorzystałem:
 
 #### Sterowanie Ręczne
 ![Preview5](./screens/img5.png)
+
+
+Frontend został oparty na szablonie <a href="https://startbootstrap.com/themes/sb-admin-2/" target="_blank">**SB-Admin 2**</a>
