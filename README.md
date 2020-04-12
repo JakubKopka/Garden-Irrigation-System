@@ -22,9 +22,8 @@ Do stworzenia projektu wykorzystałem:
 
 
 ## Screens
-
-![Preview1](./screens/img1.PNG)
-![Preview2](./screens/img2.PNG)
-![Preview3](./screens/img3.PNG)
-![Preview4](./screens/img4.PNG)
-![Preview5](./screens/img5.PNG)
+![Preview1](./screens/img1.png)
+![Preview2](./screens/img2.png)
+![Preview3](./screens/img3.png)
+![Preview4](./screens/img4.png)
+![Preview5](./screens/img5.png)
