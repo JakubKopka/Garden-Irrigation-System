@@ -22,8 +22,17 @@ Do stworzenia projektu wykorzystałem:
 
 
 ## Screens
+#### Strona Główna
 ![Preview1](./screens/img1.png)
+
+#### Ustawienia Czasu
 ![Preview2](./screens/img2.png)
+
+#### Sekcje
 ![Preview3](./screens/img3.png)
+
+#### Dodawanie Sekcji 
 ![Preview4](./screens/img4.png)
+
+#### Sterowanie Ręczne
 ![Preview5](./screens/img5.png)
