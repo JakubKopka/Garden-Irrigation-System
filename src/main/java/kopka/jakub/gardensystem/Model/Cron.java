@@ -1,11 +1,17 @@
 package kopka.jakub.gardensystem.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Entity
 public class Cron {
@@ -18,67 +24,14 @@ public class Cron {
     @Column(name = "cron")
     private String cron;
 
+    @Column(name = "time")
+    private String time;
+
     @Column(name = "active")
     private boolean active = true;
 
-    @ManyToOne
-    @JoinColumn(name = "irrigation", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "Irrigation_list_id", referencedColumnName="id")
     Irrigation irrigation;
 
-
-
-
-    public Cron() {
-    }
-
-    public Cron(String cron, Irrigation irrigation) {
-        this.cron = cron;
-        this.irrigation = irrigation;
-    }
-
-    public Cron(String cron) {
-        this.cron = cron;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCron() {
-        return cron;
-    }
-
-    public void setCron(String cron) {
-        this.cron = cron;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Irrigation getIrrigation() {
-        return irrigation;
-    }
-
-    public void setIrrigation(Irrigation irrigation) {
-        this.irrigation = irrigation;
-    }
-
-    @Override
-    public String toString() {
-        return "Cron{" +
-                "id=" + id +
-                ", cron='" + cron + '\'' +
-                ", active=" + active +
-                '}';
-    }
 }

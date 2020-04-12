@@ -1,17 +1,20 @@
 package kopka.jakub.gardensystem.Controller;
 
+import kopka.jakub.gardensystem.Dto.CronDto;
 import kopka.jakub.gardensystem.Model.Cron;
 import kopka.jakub.gardensystem.Repository.CronRepo;
 import kopka.jakub.gardensystem.Service.CronService;
-import kopka.jakub.gardensystem.Service.DynamicSchedulerVersion2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+import java.beans.Transient;
 import java.util.List;
 
 
-@RestController
+@Controller
 @RequestMapping(value = "/cron")
 public class CronController {
 
@@ -21,32 +24,34 @@ public class CronController {
     @Autowired
     CronRepo cronRepo;
 
-    @Autowired
-    DynamicSchedulerVersion2 dynamicSchedulerVersion2;
 
+    @RequestMapping()
+    public String time(Model model) {
+        model.addAttribute("crons", cronRepo.findAll());
+        CronDto cronDto = new CronDto();
+        model.addAttribute("data", cronDto);
+        return "cron";
+    }
 
     @GetMapping(value = "/all")
-    public List<Cron> getAllCrons(){
+    public List<Cron> getAllCrons() {
         return cronService.getAllCrons();
     }
 
-    @DeleteMapping(value = "/delete/{id}")
-    public void deleteCron(@PathVariable (name = "id") Long id) {
+    @GetMapping(value = "/delete/{id}")
+    public String deleteCron(@PathVariable(name = "id") Long id) {
         cronService.deleteById(id);
-        dynamicSchedulerVersion2.cancel();
-        dynamicSchedulerVersion2.activate();
+        return "redirect:/cron";
     }
 
     @PostMapping(value = "/add")
-    public void addCron(@RequestBody Cron cron){
-        System.out.println("-=================== "+ cron);
+    public String addCron(@ModelAttribute CronDto cron) {
         cronService.addCron(cron);
-        dynamicSchedulerVersion2.cancel();
-        dynamicSchedulerVersion2.activate();
+        return "redirect:/cron";
     }
 
     @RequestMapping(value = "/closest", method = RequestMethod.GET)
     public Cron getClosestCron() {
-       return cronService.getClosestCron();
+        return cronService.getClosestCron();
     }
 }

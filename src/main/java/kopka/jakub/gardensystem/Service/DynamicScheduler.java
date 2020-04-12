@@ -43,27 +43,14 @@ public class DynamicScheduler implements SchedulingConfigurer {
     CronRepo cronRepo;
 
 
-    @PostConstruct
     public void initDatabase() {
 //        Irrigation irrigation = new Irrigation();
+//        irrigation.setActive(true);
 //        Cron cron = new Cron("0 0 6 * * ?", irrigation);
-//        Section section = new Section(1, "Statyczne przód lewo góra", 20, irrigation);
+//        cron.setActive(true);
+//        Cron cron2 = new Cron("0 0 20 * * ?", irrigation);
+//        cron2.setActive(true);
 //
-//        irrigationRepo.save(irrigation);
-//        cronRepo.save(cron);
-//        sectionRepo.save(section);
-//        irrigationRepo.deleteAll();
-//        sectionRepo.deleteAll();
-//        cronRepo.deleteAll();
-//
-//        Irrigation irrigation = new Irrigation();
-//        irrigationRepo.save(irrigation);
-//
-//
-//         Cron cron = new Cron("0 0 20 * * ?", irrigation);
-//         irrigation.addNewCron(cron);
-//         cronRepo.save(cron);
-//         irrigationRepo.save(irrigation);
 ////
 ////
 ////
@@ -77,12 +64,12 @@ public class DynamicScheduler implements SchedulingConfigurer {
 //
 //
 //        List<Section> s = Arrays.asList(section1, section2,section3,  section4, section5, section6);
-//        sectionRepo.saveAll(s);
-//        irrigationRepo.save(irrigation);
+//        Set<Cron> crons = new HashSet<>();
+//        crons.add(cron);
+//        crons.add(cron2);
 //
-//        cronRepo.save(cron);
-//        sectionRepo.saveAll(s);
-//        cronRepo.save(cron);
+//        irrigation.setSections(s);
+//        irrigation.setCrons(crons);
 
 
     }

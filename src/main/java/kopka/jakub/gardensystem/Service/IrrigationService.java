@@ -18,14 +18,15 @@ public class IrrigationService {
 
 
     public Irrigation getIrrigation() {
-        return irrigationRepo.findAll().get(0);
+        List<Irrigation> irrigations = (List<Irrigation>) irrigationRepo.findAll();
+        return irrigations.get(0);
     }
 
     public void addCron(Cron cron) {
         Irrigation irrigation = getIrrigation();
         String[] cronsSplit = cron.getCron().split(":");
         cron.setCron("0 " + cronsSplit[1] + " " + cronsSplit[0] + " * * ?");
-        irrigation.addCron(cron);
+//        irrigation.addCron(cron);
         irrigationRepo.save(irrigation);
     }
 

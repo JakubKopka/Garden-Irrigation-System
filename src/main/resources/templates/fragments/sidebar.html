@@ -1,0 +1,47 @@
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"
+    xmlns:th="http://www.w3.org/1999/xhtml">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/}">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-tint"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">System Podlewania<sup></sup></div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+
+
+    <li class="nav-item active">
+        <a class="nav-link" th:href="@{/}">
+            <i class="fas fa-fw fa-home"></i>
+            <span>Strona Główna</span></a>
+    </li>
+
+    <li class="nav-item active">
+        <a class="nav-link" th:href="@{/cron}">
+            <i class="far fa-clock"></i>
+            <span>Ustawienia Czasu</span></a>
+    </li>
+
+    <li class="nav-item active">
+        <a class="nav-link" th:href="@{/section}">
+            <i class="fab fa-buromobelexperte"></i>
+            <span>Sekcje</span></a>
+    </li>
+
+    <li class="nav-item active">
+        <a class="nav-link" th:href="@{/manual}">
+            <i class="fas fa-tools"></i>
+            <span>Sterowanie Ręczne</span></a>
+    </li>
+
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+</ul>
+<!-- End of Sidebar -->

@@ -1,0 +1,372 @@
+<!--<!doctype html>-->
+<!--<html xmlns:th="https://www.thymeleaf.org">-->
+
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--    <meta http-equiv="Content-Language" content="en">-->
+<!--    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>-->
+<!--    <title>Ustawienia sekcji</title>-->
+<!--    <meta name="viewport"-->
+<!--          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"/>-->
+<!--    <meta name="description" content="This is an example dashboard created using build-in elements and components.">-->
+<!--    <meta name="msapplication-tap-highlight" content="no">-->
+
+<!--    &lt;!&ndash;-->
+<!--    =========================================================-->
+<!--    * ArchitectUI HTML Theme Dashboard - v1.0.0-->
+<!--    =========================================================-->
+<!--    * Product Page: https://dashboardpack.com-->
+<!--    * Copyright 2019 DashboardPack (https://dashboardpack.com)-->
+<!--    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)-->
+<!--    =========================================================-->
+<!--    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.-->
+<!--    &ndash;&gt;-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>-->
+
+<!--</head>-->
+<!--<body>-->
+<!--<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">-->
+
+<!--    <div th:replace="fragments/header">-->
+<!--    </div>-->
+
+<!--    <div class="app-main">-->
+
+<!--        <div th:replace="fragments/navigation">-->
+<!--        </div>-->
+
+<!--        <div class="app-main__outer">-->
+<!--            <div class="app-main__inner">-->
+<!--                <div class="app-page-title">-->
+<!--                    <div class="page-title-wrapper">-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="tab-content">-->
+<!--                    <div class="tab-pane tabs-animation fade show active" id="tab-content-1" role="tabpanel">-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-md-6">-->
+<!--                                    <div class="mb-3 card card-body"><h5 class="card-title">Włącz</h5>-->
+<!--                                        Uruchom ręcznie podlewanie-->
+<!--                                        <a th:href="@{/raspberry/start}"-->
+<!--                                           class="btn btn-success">Włącz podlewanie</a>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <div class="col-md-6">-->
+<!--                                <div class="mb-3 card card-body"><h5 class="card-title">Wyłącz</h5>-->
+<!--                                    Wyłącz ręcznie podelwanie-->
+<!--                                    <a th:href="@{/raspberry/stop}"-->
+<!--                                       class="btn btn-danger">Wyłącz podlewanie</a>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+
+<!--                <div class="main-card mb-3 card">-->
+<!--                    <div class="card-body"><h5 class="card-title">Sekcje nawadniania</h5>-->
+<!--                        <table class="mb-0 table table-striped">-->
+<!--                            <thead>-->
+<!--                            <tr>-->
+<!--                                <th>#</th>-->
+<!--                                <th>Opis sekcji</th>-->
+<!--                                <th>Numer sekcji</th>-->
+<!--                                <th></th>-->
+<!--                                <th></th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                            <tr th:each="section,iter : ${sections}">-->
+<!--                                <th scope="row" th:text="${iter.index+1}"></th>-->
+<!--                                <td th:text="${section.description}"></td>-->
+<!--                                <td th:text="${section.sectionNumber}"></td>-->
+<!--                                <td>-->
+<!--                                    <a th:href="@{/section/open/} + ${section.getId()}"-->
+<!--                                       class="mb-2 mr-2 btn btn-success">Włącz</a>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <a th:href="@{/section/close/} + ${section.getId()}"-->
+<!--                                       class="mb-2 mr-2 btn btn-danger">Wyłącz</a>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="main-card mb-3 card">-->
+<!--                    <div class="card-body"><h5 class="card-title">Raspberry Pi GPIO informacje</h5>-->
+<!--                        <table class="mb-0 table table-striped">-->
+<!--                            <thead>-->
+<!--                            <tr>-->
+<!--                                <th>#</th>-->
+<!--                                <th>GPIO</th>-->
+<!--                                <th>Status</th>-->
+<!--                                <th>Akcja</th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                            <tr>-->
+<!--                                <th>1</th>-->
+<!--                                <td>PIN 01</td>-->
+<!--                                <td> <button class="mb-2 mr-2 btn btn-secondary active">LOW</button></td>-->
+<!--                                <td><button class="mb-2 mr-2 btn-transition btn btn-outline-alternate">Zmień status</button></td>-->
+<!--                            </tr>-->
+
+<!--                            <tr>-->
+<!--                                <th>2</th>-->
+<!--                                <td>PIN 02</td>-->
+<!--                                <td> <button class="mb-2 mr-2 btn btn-success active">HIGH</button></td>-->
+<!--                                <td><button class="mb-2 mr-2 btn-transition btn btn-outline-alternate">Zmień status</button></td>-->
+<!--                            </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+
+<!--                <div class="main-card mb-3 card">-->
+<!--                    <div class="card-body"><h5 class="card-title">Raspberry Pi</h5>-->
+<!--                       <center>-->
+<!--                           <img src="https://pi4j.com/1.2/images/j8header-b-plus.png"/>-->
+<!--                       </center>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+
+<!--            </div>-->
+
+<!--            <div th:replace="fragments/footer">-->
+
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <script type="text/javascript" th:src="@{/js/main.js}"></script>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Sterowanie ręczne</title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <div th:replace="fragments/sidebar">
+    </div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <div th:replace="fragments/topbar">
+            </div>
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-4 text-gray-800">Sterowanie ręczne</h1>
+
+<!--                <div class="card shadow mb-4">-->
+<!--                    <div class="card-header py-3">-->
+<!--                        <h6 class="m-0 font-weight-bold text-primary">Raspberry Pi</h6>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+
+                <div class="tab-content">
+                    <div class="tab-pane tabs-animation fade show active" id="tab-content-1" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3 card card-body"><h5 class="card-title">Włącz</h5>
+                                    Uruchom ręcznie podlewanie
+                                    <a th:href="@{/raspberry/start}"
+                                       class="btn btn-success">Włącz podlewanie</a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3 card card-body"><h5 class="card-title">Wyłącz</h5>
+                                    Wyłącz ręcznie podelwanie
+                                    <a th:href="@{/raspberry/stop}"
+                                       class="btn btn-danger">Wyłącz podlewanie</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">GPIO informacje</h6>
+                    </div>
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
+                            <table class="mb-0 table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>GPIO</th>
+                                    <th>Status</th>
+                                    <!--                                    <th>Akcja</th>-->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="pin,iter : ${pins}">
+                                    <td th:text="${iter.index+1}">1</td>
+                                    <td th:text="${pin.getGpioNumber()}">PIN 01</td>
+                                    <td th:if="${pin.getState()} == 'LOW' ">
+                                        <button class="btn btn-outline-secondary">LOW</button>
+                                    </td>
+                                    <td th:if="${pin.getState()} == 'HIGH' ">
+                                        <button class="btn btn-outline-success">HIGH</button>
+                                    </td>
+                                    <!--                                    <td>-->
+                                    <!--                                        <button class="mb-2 mr-2 btn btn-warning">Zmień-->
+                                    <!--                                            status-->
+                                    <!--                                        </button>-->
+                                    <!--                                    </td>-->
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Sterowanie ręczne sekcjami</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="mb-0 table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Opis sekcji</th>
+                                    <th>Numer sekcji</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="section,iter : ${sections}">
+                                    <th scope="row" th:text="${iter.index+1}"></th>
+                                    <td th:text="${section.description}"></td>
+                                    <td th:text="${section.sectionNumber}"></td>
+                                    <td>
+                                        <a th:href="@{/section/open/} + ${section.getId()}"
+                                           class="mb-2 mr-2 btn btn-success">Włącz</a>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/section/close/} + ${section.getId()}"
+                                           class="mb-2 mr-2 btn btn-danger">Wyłącz</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+
+<!--                <div class="card shadow mb-4">-->
+<!--                    <div class="card-header py-3">-->
+<!--                        <h6 class="m-0 font-weight-bold text-primary">Raspberry Pi</h6>-->
+<!--                    </div>-->
+<!--                    <div class="main-card mb-3 card">-->
+<!--                        <div class="card-body">-->
+<!--                            <center>-->
+<!--                                <img src="https://pi4j.com/1.2/images/j8header-b-plus.png"/>-->
+<!--                            </center>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+
+            </div>
+
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <div th:replace="fragments/footer">
+        </div>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script th:src="@{/jquery/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/jquery/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+</body>
+
+</html>

@@ -7,6 +7,7 @@ import kopka.jakub.gardensystem.GPIO.Action;
 import kopka.jakub.gardensystem.Model.Cron;
 import kopka.jakub.gardensystem.Model.Irrigation;
 import kopka.jakub.gardensystem.Model.Section;
+import kopka.jakub.gardensystem.Repository.CronRepo;
 import kopka.jakub.gardensystem.Repository.IrrigationRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +27,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-/**
- * Alternative version for DynamicScheduler
- * This one should support everything the basic dynamic scheduler does,
- * and on top of it, you can cancel and re-activate the scheduler.
- */
 @Service
-@Transactional
 public class DynamicSchedulerVersion2 implements SchedulingConfigurer {
 
     @Autowired
@@ -41,7 +36,10 @@ public class DynamicSchedulerVersion2 implements SchedulingConfigurer {
     @Autowired
     Action action;
 
-    private static Logger LOGGER = LoggerFactory.getLogger(DynamicScheduler.class);
+    @Autowired
+    CronRepo cronRepo;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DynamicSchedulerVersion2.class);
 
     public ScheduledTaskRegistrar scheduledTaskRegistrar;
 
@@ -65,11 +63,14 @@ public class DynamicSchedulerVersion2 implements SchedulingConfigurer {
         if (taskRegistrar.getScheduler() == null) {
             taskRegistrar.setScheduler(poolScheduler2());
         }
-        List<Cron> cronList = new ArrayList<>(irrigationRepo.findAll().get(0).getCrons());
+        List<Irrigation> irrigationList = (List<Irrigation>) irrigationRepo.findAll();
+        List<Cron> cronList = (List<Cron>) cronRepo.findAll();
+
         Cron closestCrone = getClosestTimeInCrone(cronList);
-        CronTrigger croneTrigger = new CronTrigger(closestCrone.getCron(), TimeZone.getDefault());
-        System.out.println("WEszlooooo 1");
-        future = taskRegistrar.getScheduler().schedule(() -> scheduleCron(irrigationRepo.findAll().get(0)), croneTrigger);
+        if(closestCrone != null){
+            CronTrigger croneTrigger = new CronTrigger(closestCrone.getCron(), TimeZone.getDefault());
+            future = taskRegistrar.getScheduler().schedule(() -> scheduleCron(irrigationList.get(0)), croneTrigger);
+        }
     }
 
 
@@ -87,80 +88,69 @@ public class DynamicSchedulerVersion2 implements SchedulingConfigurer {
             LocalTime cronTime = LocalTime.of(cronh, cronmin, cronsec);
 
             if (closest == null) {
-                System.out.println(" closest == null");
+//                System.out.println(" closest == null");
                 closest = cronTime;
                 cron = listCrone.get(i);
-                System.out.println(" closest = " + cronTime);
+//                System.out.println(" closest = " + cronTime);
             }
-            System.out.println("closest != null ");
-            System.out.println(now + " is Before " + cronTime + "?");
+//            System.out.println("closest != null ");
+//            System.out.println(now + " is Before " + cronTime + "?");
             if (now.isBefore(cronTime)) {
                 isAfter = true;
-                System.out.println("true");
-                System.out.println(closest + ".isAfter( " + cronTime + ")?");
+//                System.out.println("true");
+//                System.out.println(closest + ".isAfter( " + cronTime + ")?");
                 if (closest.isAfter(cronTime)) {
-                    System.out.println("true");
+//                    System.out.println("true");
                     closest = cronTime;
                     cron = listCrone.get(i);
-                    System.out.println("closest " + closest);
+//                    System.out.println("closest " + closest);
                 }
                 if (now.isAfter(closest)) {
                     closest = cronTime;
                     cron = listCrone.get(i);
                 }
             } else if (!isAfter) {
-                System.out.println("isAfter == " + isAfter);
-                System.out.println(" !isAfter ");
+//                System.out.println("isAfter == " + isAfter);
+//                System.out.println(" !isAfter ");
                 if (closest.isAfter(cronTime)) {
-                    System.out.println(closest + " isAfter(" + cronTime + ") === true");
+//                    LOGGER.info(closest + " isAfter(" + cronTime + ") === true");
                     closest = cronTime;
                     cron = listCrone.get(i);
-                    System.out.println("closest = " + closest);
+//                    LOGGER.info("closest = " + closest);
                 }
             }
-            System.out.println("====== closest: " + closest);
-            System.out.println("====================================");
+//            LOGGER.info("********** Najbliższe nawadnianie będzie o godzinie: " + closest);
 
         }
 
 
-        System.out.println("Closest: " + cron);
-
+        LOGGER.info("********** Najbliższe nawadnianie będzie o godzinie: " + cron.getTime());
         return cron;
     }
 
-    @Transactional
     public void scheduleCron(Irrigation irrigation) {
-        List<Section> sections = irrigation.getSections();
-        System.out.println(irrigation);
         LOGGER.info("WYKONANO ZAPLANOWANY TASK  \t cron->");
+        List<Irrigation> irrigationList = (List<Irrigation>) irrigationRepo.findAll();
+        List<Section> sectionList = irrigation.getSections();
 
-        System.out.println("WEszlooooo 2");
-
-        List<Section> sectionList = irrigationRepo.findAll().get(0).getSections();
-        System.out.println("----------------------------");
-        System.out.println(sectionList);
-        System.out.println("----------------------------");
-
+//        System.out.println("==========="+ sectionList.size());
         for (int i = 0; i < sectionList.size(); i++) {
-            if (!irrigationRepo.findAll().get(0).isActive()) {
-                Irrigation irrigation1 = irrigationRepo.findAll().get(0);
-                irrigation1.setActive(true);
-                irrigationRepo.save(irrigation1);
+            if (!irrigation.isActive()) {
+                LOGGER.info("Irrigation is NOT active");
                 break;
             }
-            System.out.println("+++++++++ Skecja nr " + i + 1 + " jest otwarta");
-//            try {
-//                action.openSequence(sectionList.get(i).getSectionNumber());
-//
-//                TimeUnit.MINUTES.sleep(sectionList.get(i).getDuration());
-//
-//                action.closeSequence(sectionList.get(i).getSectionNumber());
-//                System.out.println("+++++++++ Skecja nr " + i + 1 + " jest zamknięta");
-//                TimeUnit.SECONDS.sleep(5);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            LOGGER.info("+++++++++ Skecja nr " + (i + 1) + " jest otwarta");
+            try {
+                action.openSequence(sectionList.get(i).getSectionNumber());
+
+                TimeUnit.MINUTES.sleep(sectionList.get(i).getDuration());
+
+                action.closeSequence(sectionList.get(i).getSectionNumber());
+                LOGGER.info("+++++++++ Skecja nr " + (i + 1) + " jest zamknięta");
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }
 

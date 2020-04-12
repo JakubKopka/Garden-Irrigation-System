@@ -1,5 +1,7 @@
 package kopka.jakub.gardensystem.Service;
 
+import kopka.jakub.gardensystem.Dto.SectionDto;
+import kopka.jakub.gardensystem.Mapper;
 import kopka.jakub.gardensystem.Model.Irrigation;
 import kopka.jakub.gardensystem.Model.Section;
 import kopka.jakub.gardensystem.Repository.IrrigationRepo;
@@ -8,12 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 public class SectionService {
 
     @Autowired
@@ -24,6 +23,11 @@ public class SectionService {
 
     @Autowired
     IrrigationRepo irrigationRepo;
+
+    @Autowired
+    Mapper mapper;
+
+
     public List<Section> getAllSections() {
         return irrigationService.getIrrigation().getSections();
     }
@@ -69,7 +73,18 @@ public class SectionService {
         sectionRepo.deleteBySectionNumber(sectonNumber);
     }
 
-    public void addSection(Section section) {
+    public void addSection(SectionDto s) {
+        Section section = mapper.mapToSection(s);
+        sectionRepo.save(section);
+    }
+
+    public Section getSectionById(Long id){
+        return sectionRepo.findById(id).orElse(null);
+    }
+
+    public void editSection(Long id, Section section){
+        section.setId(id);
+        section.setIrrigation(irrigationService.getIrrigation());
         sectionRepo.save(section);
     }
 }

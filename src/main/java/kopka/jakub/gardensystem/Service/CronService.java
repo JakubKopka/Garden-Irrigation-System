@@ -1,5 +1,7 @@
 package kopka.jakub.gardensystem.Service;
 
+import kopka.jakub.gardensystem.Dto.CronDto;
+import kopka.jakub.gardensystem.Mapper;
 import kopka.jakub.gardensystem.Model.Cron;
 import kopka.jakub.gardensystem.Model.Irrigation;
 import kopka.jakub.gardensystem.Repository.CronRepo;
@@ -12,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class CronService {
 
     @Autowired
@@ -24,21 +25,49 @@ public class CronService {
     @Autowired
     IrrigationRepo irrigationRepo;
 
-    public  void deleteById(Long id){
+    @Autowired
+    DynamicSchedulerVersion2 dynamicSchedulerVersion2;
+
+    @Autowired
+    Mapper mapper;
+
+
+    public void deleteById(Long id){
+        System.out.println("WEszlo");
         cronRepo.deleteById(id);
+        try{
+            dynamicSchedulerVersion2.cancel();
+            dynamicSchedulerVersion2.activate();
+        }catch (Exception ex){
+
+        }
     }
 
     public Cron getClosestCron() {
-        Cron cron = DynamicSchedulerVersion2.getClosestTimeInCrone(cronRepo.findAll());
-        System.out.println("--------------------- " + cron);
+        Cron cron = DynamicSchedulerVersion2.getClosestTimeInCrone((List<Cron>) cronRepo.findAll());
         return cron;
     }
 
-    public void addCron(Cron cron) {
-        cronRepo.save(cron);
+    public void addCron(CronDto cron) {
+
+        Cron cron1 = new Cron();
+        cron1.setActive(true);
+        Irrigation irrigation = irrigationRepo.findAll().get(0);;
+        cron1.setIrrigation(irrigation);
+        cron1.setCron(mapper.mapStringToCron(cron.getData()));
+        cron1.setTime(cron.getData());
+        cronRepo.save(cron1);
+
+        try {
+            dynamicSchedulerVersion2.cancel();
+            dynamicSchedulerVersion2.activate();
+        }catch (Exception ex){
+            System.out.println(ex.toString());
+        }
+
     }
 
     public List<Cron> getAllCrons() {
-        return cronRepo.findAll();
+        return (List<Cron>) cronRepo.findAll();
     }
 }
